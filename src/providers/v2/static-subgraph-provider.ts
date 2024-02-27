@@ -1,8 +1,9 @@
 import { ChainId, Token } from '@uniswap/sdk-core';
 import { Pair } from '@uniswap/v2-sdk';
 import _ from 'lodash';
+import { AdditionalChainIds } from '../../additions/AdditionalChains';
 
-import { WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
+import { ChainIds, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 import { log } from '../../util/log';
 import {
   ARB_ARBITRUM,
@@ -19,7 +20,7 @@ import {
   DAI_MOONBEAM,
   DAI_OPTIMISM,
   ETH_BNB,
-  OP_OPTIMISM,
+  OP_OPTIMISM, USDB_BLAST_SEPOLIA,
   USDC_ARBITRUM,
   USDC_AVAX,
   USDC_BASE,
@@ -36,15 +37,15 @@ import {
   WBTC_ARBITRUM,
   WBTC_MAINNET,
   WBTC_MOONBEAM,
-  WBTC_OPTIMISM,
+  WBTC_OPTIMISM, WETH_BLAST_SEPOLIA,
   WETH_POLYGON,
-  WMATIC_POLYGON,
+  WMATIC_POLYGON
 } from '../token-provider';
 
 import { IV2SubgraphProvider, V2SubgraphPool } from './subgraph-provider';
 
 type ChainTokenList = {
-  readonly [chainId in ChainId]: Token[];
+  readonly [chainId in ChainIds]: Token[];
 };
 
 const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
@@ -106,6 +107,7 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ],
   [ChainId.BASE_GOERLI]: [],
   [ChainId.BASE]: [WRAPPED_NATIVE_CURRENCY[ChainId.BASE], USDC_BASE],
+  [AdditionalChainIds.BLAST_SEPOLIA]: [WETH_BLAST_SEPOLIA, USDB_BLAST_SEPOLIA],
 };
 
 /**

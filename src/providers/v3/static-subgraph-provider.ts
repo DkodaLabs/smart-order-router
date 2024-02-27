@@ -4,8 +4,9 @@ import { FeeAmount, Pool } from '@uniswap/v3-sdk';
 import JSBI from 'jsbi';
 import _ from 'lodash';
 
+import { AdditionalChainIds } from '../../additions/AdditionalChains';
 import { unparseFeeAmount } from '../../util/amounts';
-import { WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
+import { ChainIds, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 import { log } from '../../util/log';
 import { ProviderConfig } from '../provider';
 import {
@@ -30,7 +31,7 @@ import {
   DAI_OPTIMISM_GOERLI,
   DAI_POLYGON_MUMBAI,
   ETH_BNB,
-  OP_OPTIMISM,
+  OP_OPTIMISM, USDB_BLAST_SEPOLIA,
   USDC_ARBITRUM,
   USDC_ARBITRUM_GOERLI,
   USDC_AVAX,
@@ -56,18 +57,18 @@ import {
   WBTC_MAINNET,
   WBTC_MOONBEAM,
   WBTC_OPTIMISM,
-  WBTC_OPTIMISM_GOERLI,
+  WBTC_OPTIMISM_GOERLI, WETH_BLAST_SEPOLIA,
   WETH_POLYGON,
   WMATIC_POLYGON,
   WMATIC_POLYGON_MUMBAI,
-  WXDAI_GNOSIS,
+  WXDAI_GNOSIS
 } from '../token-provider';
 
 import { IV3PoolProvider } from './pool-provider';
 import { IV3SubgraphProvider, V3SubgraphPool } from './subgraph-provider';
 
 type ChainTokenList = {
-  readonly [chainId in ChainId]: Token[];
+  readonly [chainId in ChainIds]: Token[];
 };
 
 const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
@@ -161,6 +162,7 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ],
   [ChainId.BASE_GOERLI]: [WRAPPED_NATIVE_CURRENCY[ChainId.BASE_GOERLI]],
   [ChainId.BASE]: [WRAPPED_NATIVE_CURRENCY[ChainId.BASE], USDC_BASE],
+  [AdditionalChainIds.BLAST_SEPOLIA]: [WETH_BLAST_SEPOLIA, USDB_BLAST_SEPOLIA]
 };
 
 /**

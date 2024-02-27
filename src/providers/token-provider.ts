@@ -3,6 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { parseBytes32String } from '@ethersproject/strings';
 import { ChainId, Token } from '@uniswap/sdk-core';
 import _ from 'lodash';
+import { AdditionalChainIds } from '../additions/AdditionalChains';
 
 import { IERC20Metadata__factory } from '../types/v3/factories/IERC20Metadata__factory';
 import { log, WRAPPED_NATIVE_CURRENCY } from '../util';
@@ -646,6 +647,23 @@ export const WBTC_MOONBEAM = new Token(
   'WBTC',
   'Wrapped BTC bridged using Multichain'
 );
+
+export const USDB_BLAST_SEPOLIA = new Token(
+  AdditionalChainIds.BLAST_SEPOLIA,
+  '0x4200000000000000000000000000000000000022',
+  18,
+  'USDB',
+  'Rebasing USD'
+);
+
+export const WETH_BLAST_SEPOLIA = new Token(
+  AdditionalChainIds.BLAST_SEPOLIA,
+  '0x4200000000000000000000000000000000000023',
+  18,
+  'WETH',
+  'Wrapped Ether'
+);
+
 
 export class TokenProvider implements ITokenProvider {
   constructor(

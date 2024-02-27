@@ -1,27 +1,28 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ChainId, Token } from '@uniswap/sdk-core';
 
+import { AdditionalChainIds } from '../../additions/AdditionalChains';
 import {
   BTC_BNB,
   BUSD_BNB,
   DAI_AVAX,
   DAI_BNB,
   DAI_MAINNET,
-  ITokenProvider,
+  ITokenProvider, USDB_BLAST_SEPOLIA,
   USDC_AVAX,
   USDC_BASE,
   USDC_BNB,
   USDC_MAINNET,
   USDT_BNB,
   USDT_MAINNET,
-  WBTC_MAINNET,
+  WBTC_MAINNET, WETH_BLAST_SEPOLIA,
   WMATIC_POLYGON,
-  WMATIC_POLYGON_MUMBAI,
+  WMATIC_POLYGON_MUMBAI
 } from '../../providers/token-provider';
-import { WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
+import { ChainIds, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 
 type ChainTokenList = {
-  readonly [chainId in ChainId]: Token[];
+  readonly [chainId in ChainIds]: Token[];
 };
 
 export const BASES_TO_CHECK_TRADES_AGAINST = (
@@ -72,6 +73,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = (
     ],
     [ChainId.BASE]: [WRAPPED_NATIVE_CURRENCY[ChainId.BASE]!, USDC_BASE],
     [ChainId.BASE_GOERLI]: [WRAPPED_NATIVE_CURRENCY[ChainId.BASE_GOERLI]!],
+    [AdditionalChainIds.BLAST_SEPOLIA]: [WETH_BLAST_SEPOLIA, USDB_BLAST_SEPOLIA],
   };
 };
 

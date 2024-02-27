@@ -1,14 +1,16 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { ChainId, Currency, Token } from '@uniswap/sdk-core';
+import { AdditionalChainIds } from '../../../../additions/AdditionalChains';
 
 import { AAVE_MAINNET, LIDO_MAINNET } from '../../../../providers';
+import { ChainIds } from '../../../../util';
 import { V3Route } from '../../../router';
 
 // Cost for crossing an uninitialized tick.
 export const COST_PER_UNINIT_TICK = BigNumber.from(0);
 
 //l2 execution fee on optimism is roughly the same as mainnet
-export const BASE_SWAP_COST = (id: ChainId): BigNumber => {
+export const BASE_SWAP_COST = (id: ChainIds): BigNumber => {
   switch (id) {
     case ChainId.MAINNET:
     case ChainId.GOERLI:
@@ -38,9 +40,11 @@ export const BASE_SWAP_COST = (id: ChainId): BigNumber => {
       return BigNumber.from(2000);
     case ChainId.MOONBEAM:
       return BigNumber.from(2000);
+    case AdditionalChainIds.BLAST_SEPOLIA:
+      return BigNumber.from(2000);
   }
 };
-export const COST_PER_INIT_TICK = (id: ChainId): BigNumber => {
+export const COST_PER_INIT_TICK = (id: ChainIds): BigNumber => {
   switch (id) {
     case ChainId.MAINNET:
     case ChainId.GOERLI:
@@ -67,11 +71,13 @@ export const COST_PER_INIT_TICK = (id: ChainId): BigNumber => {
     case ChainId.GNOSIS:
       return BigNumber.from(31000);
     case ChainId.MOONBEAM:
+      return BigNumber.from(31000);
+    case AdditionalChainIds.BLAST_SEPOLIA:
       return BigNumber.from(31000);
   }
 };
 
-export const COST_PER_HOP = (id: ChainId): BigNumber => {
+export const COST_PER_HOP = (id: ChainIds): BigNumber => {
   switch (id) {
     case ChainId.MAINNET:
     case ChainId.GOERLI:
@@ -97,6 +103,8 @@ export const COST_PER_HOP = (id: ChainId): BigNumber => {
     case ChainId.GNOSIS:
       return BigNumber.from(80000);
     case ChainId.MOONBEAM:
+      return BigNumber.from(80000);
+    case AdditionalChainIds.BLAST_SEPOLIA:
       return BigNumber.from(80000);
   }
 };

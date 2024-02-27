@@ -4,7 +4,8 @@ import Timeout from 'await-timeout';
 import { gql, GraphQLClient } from 'graphql-request';
 import _ from 'lodash';
 
-import { log } from '../../util';
+import { AdditionalChainIds } from '../../additions/AdditionalChains';
+import { ChainIds, log } from '../../util';
 import { ProviderConfig } from '../provider';
 import { V2SubgraphPool } from '../v2/subgraph-provider';
 
@@ -44,7 +45,7 @@ export const printV3SubgraphPool = (s: V3SubgraphPool) =>
 export const printV2SubgraphPool = (s: V2SubgraphPool) =>
   `${s.token0.id}/${s.token1.id}`;
 
-const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
+const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainIds]?: string } = {
   [ChainId.MAINNET]:
     'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
   [ChainId.OPTIMISM]:
@@ -67,6 +68,8 @@ const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainId]?: string } = {
     'https://api.thegraph.com/subgraphs/name/lynnshaoyu/uniswap-v3-avax',
   [ChainId.BASE]:
     'https://api.studio.thegraph.com/query/48211/uniswap-v3-base/version/latest',
+  [AdditionalChainIds.BLAST_SEPOLIA]:
+    'https://api.studio.thegraph.com/query/62742/thruster_v3/v0.0.3',
 };
 
 const PAGE_SIZE = 1000; // 1k is max possible query size from subgraph.

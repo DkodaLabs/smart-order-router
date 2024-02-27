@@ -6,6 +6,7 @@ import {
 } from '@uniswap/sdk-core';
 import { Pair } from '@uniswap/v2-sdk';
 import { Pool } from '@uniswap/v3-sdk';
+import { AdditionalChainIds } from '../../../additions/AdditionalChains';
 
 import { ProviderConfig } from '../../../providers/provider';
 import {
@@ -20,7 +21,7 @@ import {
   DAI_OPTIMISM_GOERLI,
   DAI_OPTIMISM_SEPOLIA,
   DAI_POLYGON_MUMBAI,
-  DAI_SEPOLIA,
+  DAI_SEPOLIA, USDB_BLAST_SEPOLIA,
   USDC_ARBITRUM,
   USDC_ARBITRUM_GOERLI,
   USDC_ARBITRUM_SEPOLIA,
@@ -52,7 +53,7 @@ import {
   USDT_OPTIMISM,
   USDT_OPTIMISM_GOERLI,
   USDT_OPTIMISM_SEPOLIA,
-  WBTC_GOERLI,
+  WBTC_GOERLI
 } from '../../../providers/token-provider';
 import { IV2PoolProvider } from '../../../providers/v2/pool-provider';
 import {
@@ -60,7 +61,7 @@ import {
   IL2GasDataProvider,
   OptimismGasData,
 } from '../../../providers/v3/gas-data-provider';
-import { WRAPPED_NATIVE_CURRENCY } from '../../../util';
+import { ChainIds, WRAPPED_NATIVE_CURRENCY } from '../../../util';
 import { CurrencyAmount } from '../../../util/amounts';
 import {
   MixedRouteWithValidQuote,
@@ -72,7 +73,7 @@ import {
 // When adding new usd gas tokens, ensure the tokens are ordered
 // from tokens with highest decimals to lowest decimals. For example,
 // DAI_AVAX has 18 decimals and comes before USDC_AVAX which has 6 decimals.
-export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
+export const usdGasTokensByChain: { [chainId in ChainIds]?: Token[] } = {
   [ChainId.MAINNET]: [DAI_MAINNET, USDC_MAINNET, USDT_MAINNET],
   [ChainId.ARBITRUM_ONE]: [
     DAI_ARBITRUM,
@@ -114,6 +115,7 @@ export const usdGasTokensByChain: { [chainId in ChainId]?: Token[] } = {
     USDC_BRIDGED_AVAX,
   ],
   [ChainId.BASE]: [USDC_BASE, USDC_NATIVE_BASE],
+  [AdditionalChainIds.BLAST_SEPOLIA]: [USDB_BLAST_SEPOLIA]
 };
 
 export type L1ToL2GasCosts = {

@@ -1,6 +1,11 @@
 import { CHAIN_TO_ADDRESSES_MAP, ChainId, SWAP_ROUTER_02_ADDRESSES as SWAP_ROUTER_02_ADDRESSES_HELPER, Token } from '@uniswap/sdk-core';
 import { FACTORY_ADDRESS } from '@uniswap/v3-sdk';
 
+import {
+  AdditionalChainIds,
+  AdditionChainToAddresses
+} from '../additions/AdditionalChains';
+
 import { NETWORKS_WITH_SAME_UNISWAP_ADDRESSES } from './chains';
 
 export const BNB_TICK_LENS_ADDRESS =
@@ -34,6 +39,7 @@ export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
     CHAIN_TO_ADDRESSES_MAP[ChainId.BASE_GOERLI].v3CoreFactoryAddress,
   [ChainId.BASE]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE].v3CoreFactoryAddress,
   // TODO: Gnosis + Moonbeam contracts to be deployed
+  [AdditionalChainIds.BLAST_SEPOLIA]: AdditionChainToAddresses[AdditionalChainIds.BLAST_SEPOLIA].v3CoreFactoryAddress,
 };
 
 export const QUOTER_V2_ADDRESSES: AddressMap = {
@@ -56,6 +62,7 @@ export const QUOTER_V2_ADDRESSES: AddressMap = {
     CHAIN_TO_ADDRESSES_MAP[ChainId.BASE_GOERLI].quoterAddress,
   [ChainId.BASE]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE].quoterAddress,
   // TODO: Gnosis + Moonbeam contracts to be deployed
+  [AdditionalChainIds.BLAST_SEPOLIA]: AdditionChainToAddresses[AdditionalChainIds.BLAST_SEPOLIA].quoterAddress,
 };
 
 export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {
@@ -86,9 +93,16 @@ export const UNISWAP_MULTICALL_ADDRESSES: AddressMap = {
     CHAIN_TO_ADDRESSES_MAP[ChainId.BASE_GOERLI].multicallAddress,
   [ChainId.BASE]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE].multicallAddress,
   // TODO: Gnosis + Moonbeam contracts to be deployed
+  [AdditionalChainIds.BLAST_SEPOLIA]: AdditionChainToAddresses[AdditionalChainIds.BLAST_SEPOLIA].multicallAddress,
 };
 
 export const SWAP_ROUTER_02_ADDRESSES= (chainId: number): string => {
+  if (Object.values(AdditionalChainIds).includes(chainId)) {
+    const address = AdditionChainToAddresses[chainId as AdditionalChainIds].swapRouter02Address;
+    if (address) {
+      return address;
+    }
+  }
   return SWAP_ROUTER_02_ADDRESSES_HELPER(chainId) ?? '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45';
 };
 

@@ -1,7 +1,8 @@
 import { ChainId, Token } from '@uniswap/sdk-core';
 import _ from 'lodash';
 
-import { log, WRAPPED_NATIVE_CURRENCY } from '../util';
+import { AdditionalChainIds } from '../additions/AdditionalChains';
+import { ChainIds, log, WRAPPED_NATIVE_CURRENCY } from '../util';
 
 import { ICache } from './cache';
 import {
@@ -26,7 +27,7 @@ import {
   DAI_POLYGON_MUMBAI,
   ETH_BNB,
   ITokenProvider,
-  TokenAccessor,
+  TokenAccessor, USDB_BLAST_SEPOLIA,
   USDC_ARBITRUM,
   USDC_ARBITRUM_GOERLI,
   USDC_ARBITRUM_SEPOLIA,
@@ -52,14 +53,14 @@ import {
   WBTC_MOONBEAM,
   WBTC_OPTIMISM,
   WBTC_OPTIMISM_GOERLI,
-  WBTC_OPTIMISM_SEPOLIA,
+  WBTC_OPTIMISM_SEPOLIA, WETH_BLAST_SEPOLIA,
   WMATIC_POLYGON,
-  WMATIC_POLYGON_MUMBAI,
+  WMATIC_POLYGON_MUMBAI
 } from './token-provider';
 
 // These tokens will added to the Token cache on initialization.
 export const CACHE_SEED_TOKENS: {
-  [chainId in ChainId]?: { [symbol: string]: Token };
+  [chainId in ChainIds]?: { [symbol: string]: Token };
 } = {
   [ChainId.MAINNET]: {
     WETH: WRAPPED_NATIVE_CURRENCY[ChainId.MAINNET]!,
@@ -161,6 +162,10 @@ export const CACHE_SEED_TOKENS: {
     WETH: WRAPPED_NATIVE_CURRENCY[ChainId.BASE],
   },
   // Currently we do not have providers for Moonbeam mainnet or Gnosis testnet
+  [AdditionalChainIds.BLAST_SEPOLIA]: {
+    USDB: USDB_BLAST_SEPOLIA,
+    WETH: WETH_BLAST_SEPOLIA,
+  }
 };
 
 /**

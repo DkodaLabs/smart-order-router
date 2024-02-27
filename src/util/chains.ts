@@ -6,8 +6,13 @@ import {
   Token,
 } from '@uniswap/sdk-core';
 
+import { AdditionalChainIds } from '../additions/AdditionalChains';
+import { WETH_BLAST_SEPOLIA } from '../providers';
+
+export type ChainIds = ChainId | AdditionalChainIds;
+
 // WIP: Gnosis, Moonbeam
-export const SUPPORTED_CHAINS: ChainId[] = [
+export const SUPPORTED_CHAINS: ChainIds[] = [
   ChainId.MAINNET,
   ChainId.OPTIMISM,
   ChainId.OPTIMISM_GOERLI,
@@ -24,6 +29,7 @@ export const SUPPORTED_CHAINS: ChainId[] = [
   ChainId.BNB,
   ChainId.AVALANCHE,
   ChainId.BASE,
+  AdditionalChainIds.BLAST_SEPOLIA
   // Gnosis and Moonbeam don't yet have contracts deployed yet
 ];
 
@@ -36,6 +42,7 @@ export const V2_SUPPORTED = [
   ChainId.BASE,
   ChainId.BNB,
   ChainId.AVALANCHE,
+  AdditionalChainIds.BLAST_SEPOLIA
 ];
 
 export const HAS_L1_FEE = [
@@ -58,7 +65,7 @@ export const NETWORKS_WITH_SAME_UNISWAP_ADDRESSES = [
   ChainId.POLYGON_MUMBAI,
 ];
 
-export const ID_TO_CHAIN_ID = (id: number): ChainId => {
+export const ID_TO_CHAIN_ID = (id: number): ChainIds => {
   switch (id) {
     case 1:
       return ChainId.MAINNET;
@@ -98,6 +105,8 @@ export const ID_TO_CHAIN_ID = (id: number): ChainId => {
       return ChainId.BASE;
     case 84531:
       return ChainId.BASE_GOERLI;
+    case 168587773:
+      return AdditionalChainIds.BLAST_SEPOLIA;
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
@@ -123,6 +132,7 @@ export enum ChainName {
   AVALANCHE = 'avalanche-mainnet',
   BASE = 'base-mainnet',
   BASE_GOERLI = 'base-goerli',
+  BLAST_SEPOLIA = 'blast-sepolia',
 }
 
 export enum NativeCurrencyName {
@@ -202,6 +212,11 @@ export const NATIVE_NAMES_BY_ID: { [chainId: number]: string[] } = {
     'ETHER',
     '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   ],
+  [AdditionalChainIds.BLAST_SEPOLIA]: [
+    'ETH',
+    'ETHER',
+    '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+  ],
 };
 
 export const NATIVE_CURRENCY: { [chainId: number]: NativeCurrencyName } = {
@@ -223,6 +238,7 @@ export const NATIVE_CURRENCY: { [chainId: number]: NativeCurrencyName } = {
   [ChainId.BNB]: NativeCurrencyName.BNB,
   [ChainId.AVALANCHE]: NativeCurrencyName.AVALANCHE,
   [ChainId.BASE]: NativeCurrencyName.ETHER,
+  [AdditionalChainIds.BLAST_SEPOLIA]: NativeCurrencyName.ETHER,
 };
 
 export const ID_TO_NETWORK_NAME = (id: number): ChainName => {
@@ -265,6 +281,8 @@ export const ID_TO_NETWORK_NAME = (id: number): ChainName => {
       return ChainName.BASE;
     case 84531:
       return ChainName.BASE_GOERLI;
+    case AdditionalChainIds.BLAST_SEPOLIA:
+      return ChainName.BLAST_SEPOLIA;
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
@@ -274,7 +292,9 @@ export const CHAIN_IDS_LIST = Object.values(ChainId).map((c) =>
   c.toString()
 ) as string[];
 
-export const ID_TO_PROVIDER = (id: ChainId): string => {
+CHAIN_IDS_LIST.push(AdditionalChainIds.BLAST_SEPOLIA.toString());
+
+export const ID_TO_PROVIDER = (id: ChainIds): string => {
   switch (id) {
     case ChainId.MAINNET:
       return process.env.JSON_RPC_PROVIDER!;
@@ -308,12 +328,14 @@ export const ID_TO_PROVIDER = (id: ChainId): string => {
       return process.env.JSON_RPC_PROVIDER_AVALANCHE!;
     case ChainId.BASE:
       return process.env.JSON_RPC_PROVIDER_BASE!;
+    case AdditionalChainIds.BLAST_SEPOLIA:
+      return "https://sepolia.blast.io";
     default:
       throw new Error(`Chain id: ${id} not supported`);
   }
 };
 
-export const WRAPPED_NATIVE_CURRENCY: { [chainId in ChainId]: Token } = {
+export const WRAPPED_NATIVE_CURRENCY: { [chainId in ChainIds]: Token } = {
   [ChainId.MAINNET]: new Token(
     1,
     '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
@@ -449,6 +471,7 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId in ChainId]: Token } = {
     'WETH',
     'Wrapped Ether'
   ),
+  [AdditionalChainIds.BLAST_SEPOLIA]: WETH_BLAST_SEPOLIA,
 };
 
 function isMatic(
@@ -602,7 +625,7 @@ class AvalancheNativeCurrency extends NativeCurrency {
 export class ExtendedEther extends Ether {
   public get wrapped(): Token {
     if (this.chainId in WRAPPED_NATIVE_CURRENCY) {
-      return WRAPPED_NATIVE_CURRENCY[this.chainId as ChainId];
+      return WRAPPED_NATIVE_CURRENCY[this.chainId as ChainIds];
     }
     throw new Error('Unsupported chain ID');
   }
