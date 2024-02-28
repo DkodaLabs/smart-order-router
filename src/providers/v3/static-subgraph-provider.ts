@@ -178,7 +178,7 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  */
 export class StaticV3SubgraphProvider implements IV3SubgraphProvider {
   constructor(
-    private chainId: ChainId,
+    private chainId: ChainIds,
     private poolProvider: IV3PoolProvider
   ) {}
 

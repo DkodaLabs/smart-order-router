@@ -1,8 +1,16 @@
 import { BigNumber } from '@ethersproject/bignumber';
+import { BaseProvider } from '@ethersproject/providers';
 import { Token } from '@uniswap/sdk-core';
-import { computePoolAddress, FeeAmount, Pool } from '@uniswap/v3-sdk';
+import {
+  ADDRESS_ZERO,
+  computePoolAddress,
+  FeeAmount,
+  Pool
+} from '@uniswap/v3-sdk';
 import retry, { Options as RetryOptions } from 'async-retry';
+import { ethers } from 'ethers';
 import _ from 'lodash';
+import { AdditionalChainIds } from '../../additions/AdditionalChains';
 
 import { IUniswapV3PoolState__factory } from '../../types/v3/factories/IUniswapV3PoolState__factory';
 import { ChainIds } from '../../util';
@@ -56,6 +64,19 @@ export interface IV3PoolProvider {
     tokenB: Token,
     feeAmount: FeeAmount
   ): { poolAddress: string; token0: Token; token1: Token };
+
+  /**
+   * Gets the pool address for the specified token pair and fee tier.
+   *
+   * @param tokenA Token A in the pool.
+   * @param tokenB Token B in the pool.
+   * @param feeAmount The fee amount of the pool.
+   */
+  getPoolAddressAsync(
+    tokenA: Token,
+    tokenB: Token,
+    feeAmount: FeeAmount
+  ): Promise<{ poolAddress: string; token0: Token; token1: Token }>
 }
 
 export type V3PoolAccessor = {
@@ -79,22 +100,27 @@ export class V3PoolProvider implements IV3PoolProvider {
    * Creates an instance of V3PoolProvider.
    * @param chainId The chain id to use.
    * @param multicall2Provider The multicall provider to use to get the pools.
+   * @param provider The provider to use to get the pools.
    * @param retryOptions The retry options for each call to the multicall.
    */
   constructor(
     protected chainId: ChainIds,
     protected multicall2Provider: IMulticallProvider,
+    protected provider: BaseProvider,
     protected retryOptions: V3PoolRetryOptions = {
       retries: 2,
       minTimeout: 50,
       maxTimeout: 500,
-    }
+    },
   ) {}
 
   public async getPools(
     tokenPairs: [Token, Token, FeeAmount][],
     providerConfig?: ProviderConfig
   ): Promise<V3PoolAccessor> {
+
+    const shouldMakeCall = Object.values(AdditionalChainIds).includes(this.chainId.valueOf());
+
     const poolAddressSet: Set<string> = new Set<string>();
     const sortedTokenPairs: Array<[Token, Token, FeeAmount]> = [];
     const sortedPoolAddresses: string[] = [];
@@ -102,13 +128,11 @@ export class V3PoolProvider implements IV3PoolProvider {
     for (const tokenPair of tokenPairs) {
       const [tokenA, tokenB, feeAmount] = tokenPair;
 
-      const { poolAddress, token0, token1 } = this.getPoolAddress(
-        tokenA,
-        tokenB,
-        feeAmount
-      );
+      const { poolAddress, token0, token1 } = shouldMakeCall
+        ? await this.getPoolAddressAsync(tokenA, tokenB, feeAmount)
+        : this.getPoolAddress(tokenA, tokenB, feeAmount);
 
-      if (poolAddressSet.has(poolAddress)) {
+      if (poolAddressSet.has(poolAddress) || poolAddress === ADDRESS_ZERO) {
         continue;
       }
 
@@ -224,6 +248,7 @@ export class V3PoolProvider implements IV3PoolProvider {
     if (cachedAddress) {
       return { poolAddress: cachedAddress, token0, token1 };
     }
+    log.debug(`Getting pool address for ${token0.symbol}/${token1.symbol}/${feeAmount}%`);
 
     const poolAddress = computePoolAddress({
       factoryAddress: V3_CORE_FACTORY_ADDRESSES[this.chainId]!,
@@ -231,6 +256,36 @@ export class V3PoolProvider implements IV3PoolProvider {
       tokenB: token1,
       fee: feeAmount,
     });
+
+    this.POOL_ADDRESS_CACHE[cacheKey] = poolAddress;
+
+    return { poolAddress, token0, token1 };
+  }
+
+  public async getPoolAddressAsync(tokenA: Token, tokenB: Token, feeAmount: FeeAmount): Promise<{ poolAddress: string; token0: Token; token1: Token }> {
+    const [token0, token1] = tokenA.sortsBefore(tokenB)
+      ? [tokenA, tokenB]
+      : [tokenB, tokenA];
+
+    const cacheKey = `${this.chainId}/${token0.address}/${token1.address}/${feeAmount}`;
+
+    const cachedAddress = this.POOL_ADDRESS_CACHE[cacheKey];
+
+    if (cachedAddress) {
+      return { poolAddress: cachedAddress, token0, token1 };
+    }
+
+    log.debug(`Fetching pool address for ${token0.symbol}/${token1.symbol}/${feeAmount}%`);
+
+    const factoryContract =
+      new ethers.Contract(
+        V3_CORE_FACTORY_ADDRESSES[this.chainId]!,
+        ['function getPool(address,address,uint24) external view returns (address)'],
+        this.provider
+      );
+    const poolAddress = await factoryContract.getPool(token0.address, token1.address, feeAmount);
+
+    log.debug(`Got pool address ${poolAddress}`);
 
     this.POOL_ADDRESS_CACHE[cacheKey] = poolAddress;
 

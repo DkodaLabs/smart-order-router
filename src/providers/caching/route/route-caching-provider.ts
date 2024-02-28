@@ -13,6 +13,8 @@ import {
   TradeType,
 } from '@uniswap/sdk-core';
 
+import { ChainIds } from '../../../util';
+
 import { CacheMode } from './model';
 import { CachedRoutes } from './model/cached-routes';
 
@@ -133,7 +135,7 @@ export abstract class IRouteCachingProvider {
    * @param amount
    */
   public abstract getCacheMode(
-    chainId: ChainId,
+    chainId: ChainIds,
     amount: CurrencyAmount<Currency>,
     quoteToken: Token,
     tradeType: TradeType,

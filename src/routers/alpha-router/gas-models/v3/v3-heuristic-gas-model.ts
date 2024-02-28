@@ -1,9 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { ChainId, Price } from '@uniswap/sdk-core';
+import { Price } from '@uniswap/sdk-core';
 import { Pool } from '@uniswap/v3-sdk';
 import _ from 'lodash';
 
-import { WRAPPED_NATIVE_CURRENCY } from '../../../..';
+import { ChainIds, WRAPPED_NATIVE_CURRENCY } from '../../../..';
 import { CurrencyAmount } from '../../../../util/amounts';
 import { calculateL1GasFeesHelper } from '../../../../util/gas-factory-helpers';
 import { log } from '../../../../util/log';
@@ -252,7 +252,7 @@ export class V3HeuristicGasModelFactory extends IOnChainGasModelFactory {
   private estimateGas(
     routeWithValidQuote: V3RouteWithValidQuote,
     gasPriceWei: BigNumber,
-    chainId: ChainId,
+    chainId: ChainIds,
     providerConfig?: GasModelProviderConfig
   ) {
     const totalInitializedTicksCrossed = BigNumber.from(

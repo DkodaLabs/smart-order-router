@@ -1,8 +1,9 @@
-import { ChainId, Token } from '@uniswap/sdk-core';
+import { Token } from '@uniswap/sdk-core';
 import { FeeAmount, Pool } from '@uniswap/v3-sdk';
 import _ from 'lodash';
 
-import { metric, MetricLoggerUnit } from '../../util';
+import { AdditionalChainIds } from '../../additions/AdditionalChains';
+import { ChainIds, metric, MetricLoggerUnit } from '../../util';
 import { log } from '../../util/log';
 
 import { ICache } from './../cache';
@@ -19,7 +20,7 @@ import { IV3PoolProvider, V3PoolAccessor } from './pool-provider';
  */
 export class CachingV3PoolProvider implements IV3PoolProvider {
   private POOL_KEY = (
-    chainId: ChainId,
+    chainId: ChainIds,
     address: string,
     blockNumber?: number
   ) =>
@@ -34,7 +35,7 @@ export class CachingV3PoolProvider implements IV3PoolProvider {
    * @param cache Cache instance to hold cached pools.
    */
   constructor(
-    protected chainId: ChainId,
+    protected chainId: ChainIds,
     protected poolProvider: IV3PoolProvider,
     private cache: ICache<Pool>
   ) {}
@@ -43,6 +44,9 @@ export class CachingV3PoolProvider implements IV3PoolProvider {
     tokenPairs: [Token, Token, FeeAmount][],
     providerConfig?: ProviderConfig
   ): Promise<V3PoolAccessor> {
+
+    const shouldMakeCall = Object.values(AdditionalChainIds).includes(this.chainId.valueOf());
+
     const poolAddressSet: Set<string> = new Set<string>();
     const poolsToGetTokenPairs: Array<[Token, Token, FeeAmount]> = [];
     const poolsToGetAddresses: string[] = [];
@@ -50,11 +54,9 @@ export class CachingV3PoolProvider implements IV3PoolProvider {
     const blockNumber = await providerConfig?.blockNumber;
 
     for (const [tokenA, tokenB, feeAmount] of tokenPairs) {
-      const { poolAddress, token0, token1 } = this.getPoolAddress(
-        tokenA,
-        tokenB,
-        feeAmount
-      );
+      const { poolAddress, token0, token1 } = shouldMakeCall
+        ? await this.getPoolAddressAsync(tokenA, tokenB, feeAmount)
+        : this.getPoolAddress(tokenA, tokenB, feeAmount);
 
       if (poolAddressSet.has(poolAddress)) {
         continue;
@@ -141,5 +143,13 @@ export class CachingV3PoolProvider implements IV3PoolProvider {
     feeAmount: FeeAmount
   ): { poolAddress: string; token0: Token; token1: Token } {
     return this.poolProvider.getPoolAddress(tokenA, tokenB, feeAmount);
+  }
+
+  public getPoolAddressAsync(tokenA: Token, tokenB: Token, feeAmount: FeeAmount): Promise<{
+    poolAddress: string;
+    token0: Token;
+    token1: Token
+  }> {
+    return this.poolProvider.getPoolAddressAsync(tokenA, tokenB, feeAmount);
   }
 }

@@ -1,8 +1,8 @@
 import { ChainId, Token } from '@uniswap/sdk-core';
 import { Pair } from '@uniswap/v2-sdk';
 import _ from 'lodash';
-import { AdditionalChainIds } from '../../additions/AdditionalChains';
 
+import { AdditionalChainIds } from '../../additions/AdditionalChains';
 import { ChainIds, WRAPPED_NATIVE_CURRENCY } from '../../util/chains';
 import { log } from '../../util/log';
 import {
@@ -123,7 +123,7 @@ const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * @class StaticV2SubgraphProvider
  */
 export class StaticV2SubgraphProvider implements IV2SubgraphProvider {
-  constructor(private chainId: ChainId) {}
+  constructor(private chainId: ChainIds) {}
 
   public async getPools(
     tokenIn?: Token,

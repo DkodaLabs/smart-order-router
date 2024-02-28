@@ -17,10 +17,10 @@ export enum AdditionalChainIds {
 export const AdditionChainToAddresses: { [chainId in AdditionalChainIds]: ChainAddresses } = {
   [AdditionalChainIds.BLAST_SEPOLIA]: {
     v3CoreFactoryAddress: '0xe832c58505D5BFECE4053B49f0c64Fb4c0a9AaD7',
-    multicallAddress: '0xE4690BD7A9cFc681A209443BCE31aB943F9a9459',
-    quoterAddress: '0xE4690BD7A9cFc681A209443BCE31aB943F9a9459',
+    multicallAddress: '0x74eFC66BA88553d23c673Ec20E85B778Ff0d11b6',
+    quoterAddress: '0x821eE201E8EB79c8b5141989A72B020621890966',
     nonfungiblePositionManagerAddress: '0x46Eb7Cff688ea0defCB75056ca209d7A2039fDa8',
-    tickLensAddress: '0x66650a23E6F09eaD2B0f47874A5e793E14324881',
-    swapRouter02Address: '0xc47d832aC7486E05E1Fdf8945009F12ab0654Eb7',
+    tickLensAddress: '0x355528990642B27472188dc32177c3208e587165',
+    swapRouter02Address: '0xE4690BD7A9cFc681A209443BCE31aB943F9a9459',
   }
 }

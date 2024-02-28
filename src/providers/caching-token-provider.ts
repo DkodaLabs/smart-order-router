@@ -53,7 +53,8 @@ import {
   WBTC_MOONBEAM,
   WBTC_OPTIMISM,
   WBTC_OPTIMISM_GOERLI,
-  WBTC_OPTIMISM_SEPOLIA, WETH_BLAST_SEPOLIA,
+  WBTC_OPTIMISM_SEPOLIA,
+  WETH_BLAST_SEPOLIA,
   WMATIC_POLYGON,
   WMATIC_POLYGON_MUMBAI
 } from './token-provider';
@@ -176,11 +177,11 @@ export const CACHE_SEED_TOKENS: {
  * @class CachingTokenProviderWithFallback
  */
 export class CachingTokenProviderWithFallback implements ITokenProvider {
-  private CACHE_KEY = (chainId: ChainId, address: string) =>
+  private CACHE_KEY = (chainId: ChainIds, address: string) =>
     `token-${chainId}-${address}`;
 
   constructor(
-    protected chainId: ChainId,
+    protected chainId: ChainIds,
     // Token metadata (e.g. symbol and decimals) don't change so can be cached indefinitely.
     // Constructing a new token object is slow as sdk-core does checksumming.
     private tokenCache: ICache<Token>,

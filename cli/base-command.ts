@@ -254,7 +254,7 @@ export abstract class BaseCommand extends Command {
 
     const multicall2Provider = new UniswapMulticallProvider(chainId, provider);
     this._multicall2Provider = multicall2Provider;
-    this._poolProvider = new V3PoolProvider(chainId, multicall2Provider);
+    this._poolProvider = new V3PoolProvider(chainId, multicall2Provider, provider);
 
     // initialize tokenProvider
     const tokenProviderOnChain = new TokenProvider(chainId, multicall2Provider);
@@ -269,7 +269,7 @@ export abstract class BaseCommand extends Command {
       this._router = new LegacyRouter({
         chainId,
         multicall2Provider,
-        poolProvider: new V3PoolProvider(chainId, multicall2Provider),
+        poolProvider: new V3PoolProvider(chainId, multicall2Provider, provider),
         quoteProvider: new OnChainQuoteProvider(
           chainId,
           provider,
@@ -284,7 +284,7 @@ export abstract class BaseCommand extends Command {
 
       const v3PoolProvider = new CachingV3PoolProvider(
         chainId,
-        new V3PoolProvider(chainId, multicall2Provider),
+        new V3PoolProvider(chainId, multicall2Provider, provider),
         new NodeJSCache(new NodeCache({ stdTTL: 360, useClones: false }))
       );
       const tokenFeeFetcher = new OnChainTokenFeeFetcher(

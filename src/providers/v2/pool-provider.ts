@@ -1,15 +1,16 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { ChainId, Token } from '@uniswap/sdk-core';
+import { Token } from '@uniswap/sdk-core';
 import { Pair } from '@uniswap/v2-sdk';
 import retry, { Options as RetryOptions } from 'async-retry';
 import _ from 'lodash';
 
 import { IUniswapV2Pair__factory } from '../../types/v2/factories/IUniswapV2Pair__factory';
 import {
+  ChainIds,
   CurrencyAmount,
   ID_TO_NETWORK_NAME,
   metric,
-  MetricLoggerUnit,
+  MetricLoggerUnit
 } from '../../util';
 import { log } from '../../util/log';
 import { poolToString } from '../../util/routes';
@@ -77,7 +78,7 @@ export class V2PoolProvider implements IV2PoolProvider {
    * @param retryOptions The retry options for each call to the multicall.
    */
   constructor(
-    protected chainId: ChainId,
+    protected chainId: ChainIds,
     protected multicall2Provider: IMulticallProvider,
     protected tokenPropertiesProvider: ITokenPropertiesProvider,
     protected retryOptions: V2PoolRetryOptions = {

@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { AdditionalChainIds } from '../additions/AdditionalChains';
 
 import { IERC20Metadata__factory } from '../types/v3/factories/IERC20Metadata__factory';
-import { log, WRAPPED_NATIVE_CURRENCY } from '../util';
+import { ChainIds, log, WRAPPED_NATIVE_CURRENCY } from '../util';
 
 import { IMulticallProvider, Result } from './multicall-provider';
 import { ProviderConfig } from './provider';
@@ -667,7 +667,7 @@ export const WETH_BLAST_SEPOLIA = new Token(
 
 export class TokenProvider implements ITokenProvider {
   constructor(
-    private chainId: ChainId,
+    private chainId: ChainIds,
     protected multicall2Provider: IMulticallProvider
   ) {}
 

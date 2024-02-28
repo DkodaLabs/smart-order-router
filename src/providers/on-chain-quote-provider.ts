@@ -14,7 +14,12 @@ import stats from 'stats-lite';
 import { MixedRoute, V2Route, V3Route } from '../routers/router';
 import { IMixedRouteQuoterV1__factory } from '../types/other/factories/IMixedRouteQuoterV1__factory';
 import { IQuoterV2__factory } from '../types/v3/factories/IQuoterV2__factory';
-import { ID_TO_NETWORK_NAME, metric, MetricLoggerUnit } from '../util';
+import {
+  ChainIds,
+  ID_TO_NETWORK_NAME,
+  metric,
+  MetricLoggerUnit
+} from '../util';
 import {
   MIXED_ROUTE_QUOTER_V1_ADDRESSES,
   QUOTER_V2_ADDRESSES,
@@ -266,7 +271,7 @@ export class OnChainQuoteProvider implements IOnChainQuoteProvider {
    * @param [quoterAddressOverride] Overrides the address of the quoter contract to use.
    */
   constructor(
-    protected chainId: ChainId,
+    protected chainId: ChainIds,
     protected provider: BaseProvider,
     // Only supports Uniswap Multicall as it needs the gas limitting functionality.
     protected multicall2Provider: UniswapMulticallProvider,

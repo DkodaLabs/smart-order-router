@@ -1,4 +1,4 @@
-import { ChainId } from '@uniswap/sdk-core';
+import { ChainIds } from '../util';
 
 import { log } from '../util/log';
 
@@ -12,7 +12,7 @@ import { GasPrice, IGasPriceProvider } from './gas-price-provider';
  * @class CachingV3SubgraphProvider
  */
 export class CachingGasStationProvider extends IGasPriceProvider {
-  private GAS_KEY = (chainId: ChainId, blockNumber: number) =>
+  private GAS_KEY = (chainId: ChainIds, blockNumber: number) =>
     `gasPrice-${chainId}-${blockNumber}`;
 
   /**
@@ -22,7 +22,7 @@ export class CachingGasStationProvider extends IGasPriceProvider {
    * @param cache Cache instance to hold cached pools.
    */
   constructor(
-    protected chainId: ChainId,
+    protected chainId: ChainIds,
     private gasPriceProvider: IGasPriceProvider,
     private cache: ICache<GasPrice>
   ) {

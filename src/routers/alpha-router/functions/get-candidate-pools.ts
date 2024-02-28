@@ -71,7 +71,11 @@ import {
   IV3SubgraphProvider,
   V3SubgraphPool,
 } from '../../../providers/v3/subgraph-provider';
-import { unparseFeeAmount, WRAPPED_NATIVE_CURRENCY } from '../../../util';
+import {
+  ChainIds,
+  unparseFeeAmount,
+  WRAPPED_NATIVE_CURRENCY
+} from '../../../util';
 import { parseFeeAmount } from '../../../util/amounts';
 import { log } from '../../../util/log';
 import { metric, MetricLoggerUnit } from '../../../util/metric';
@@ -105,7 +109,7 @@ export type V3GetCandidatePoolsParams = {
   tokenProvider: ITokenProvider;
   poolProvider: IV3PoolProvider;
   blockedTokenListProvider?: ITokenListProvider;
-  chainId: ChainId;
+  chainId: ChainIds;
 };
 
 export type V2GetCandidatePoolsParams = {
@@ -117,7 +121,7 @@ export type V2GetCandidatePoolsParams = {
   tokenProvider: ITokenProvider;
   poolProvider: IV2PoolProvider;
   blockedTokenListProvider?: ITokenListProvider;
-  chainId: ChainId;
+  chainId: ChainIds;
 };
 
 export type MixedRouteGetCandidatePoolsParams = {
@@ -128,10 +132,10 @@ export type MixedRouteGetCandidatePoolsParams = {
   v2poolProvider: IV2PoolProvider;
   v3poolProvider: IV3PoolProvider;
   blockedTokenListProvider?: ITokenListProvider;
-  chainId: ChainId;
+  chainId: ChainIds;
 };
 
-const baseTokensByChain: { [chainId in ChainId]?: Token[] } = {
+const baseTokensByChain: { [chainId in ChainIds]?: Token[] } = {
   [ChainId.MAINNET]: [
     USDC_MAINNET,
     USDT_MAINNET,

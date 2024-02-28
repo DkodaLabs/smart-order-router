@@ -6,8 +6,8 @@ import {
 } from '@uniswap/sdk-core';
 import { Pair } from '@uniswap/v2-sdk';
 import { Pool } from '@uniswap/v3-sdk';
-import { AdditionalChainIds } from '../../../additions/AdditionalChains';
 
+import { AdditionalChainIds } from '../../../additions/AdditionalChains';
 import { ProviderConfig } from '../../../providers/provider';
 import {
   CUSD_CELO,
@@ -135,7 +135,7 @@ export type GasModelProviderConfig = ProviderConfig & {
 };
 
 export type BuildOnChainGasModelFactoryType = {
-  chainId: ChainId;
+  chainId: ChainIds;
   gasPriceWei: BigNumber;
   pools: LiquidityCalculationPools;
   amountToken: Token;
@@ -148,7 +148,7 @@ export type BuildOnChainGasModelFactoryType = {
 };
 
 export type BuildV2GasModelFactoryType = {
-  chainId: ChainId;
+  chainId: ChainIds;
   gasPriceWei: BigNumber;
   poolProvider: IV2PoolProvider;
   token: Token;
@@ -248,7 +248,7 @@ export abstract class IOnChainGasModelFactory {
 // Gets the native price of the pool, dependent on 0 or 1
 // quotes across the pool
 export const getQuoteThroughNativePool = (
-  chainId: ChainId,
+  chainId: ChainIds,
   nativeTokenAmount: CurrencyAmountRaw<Token>,
   nativeTokenPool: Pool | Pair
 ): CurrencyAmount => {

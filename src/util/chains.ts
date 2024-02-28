@@ -7,7 +7,6 @@ import {
 } from '@uniswap/sdk-core';
 
 import { AdditionalChainIds } from '../additions/AdditionalChains';
-import { WETH_BLAST_SEPOLIA } from '../providers';
 
 export type ChainIds = ChainId | AdditionalChainIds;
 
@@ -329,7 +328,7 @@ export const ID_TO_PROVIDER = (id: ChainIds): string => {
     case ChainId.BASE:
       return process.env.JSON_RPC_PROVIDER_BASE!;
     case AdditionalChainIds.BLAST_SEPOLIA:
-      return "https://sepolia.blast.io";
+      return "https://yolo-restless-fire.blast-sepolia.quiknode.pro/6d8013584783e1f1ab32031f7091d7e21000c6af";
     default:
       throw new Error(`Chain id: ${id} not supported`);
   }
@@ -471,7 +470,13 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId in ChainIds]: Token } = {
     'WETH',
     'Wrapped Ether'
   ),
-  [AdditionalChainIds.BLAST_SEPOLIA]: WETH_BLAST_SEPOLIA,
+  [AdditionalChainIds.BLAST_SEPOLIA]: new Token(
+    AdditionalChainIds.BLAST_SEPOLIA,
+    '0x4200000000000000000000000000000000000023',
+    18,
+    'WETH',
+    'Wrapped Ether'
+  ),
 };
 
 function isMatic(

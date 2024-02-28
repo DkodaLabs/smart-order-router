@@ -11,7 +11,12 @@ import {
 } from '../routers';
 import { Erc20__factory } from '../types/other/factories/Erc20__factory';
 import { Permit2__factory } from '../types/other/factories/Permit2__factory';
-import { CurrencyAmount, log, SWAP_ROUTER_02_ADDRESSES } from '../util';
+import {
+  ChainIds,
+  CurrencyAmount,
+  log,
+  SWAP_ROUTER_02_ADDRESSES
+} from '../util';
 
 import { IPortionProvider } from './portion-provider';
 import { ArbitrumGasData, OptimismGasData } from './v3/gas-data-provider';
@@ -51,7 +56,7 @@ export abstract class Simulator {
   constructor(
     provider: JsonRpcProvider,
     portionProvider: IPortionProvider,
-    protected chainId: ChainId
+    protected chainId: ChainIds
   ) {
     this.provider = provider;
     this.portionProvider = portionProvider;

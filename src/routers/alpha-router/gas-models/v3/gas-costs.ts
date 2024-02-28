@@ -109,11 +109,11 @@ export const COST_PER_HOP = (id: ChainIds): BigNumber => {
   }
 };
 
-export const SINGLE_HOP_OVERHEAD = (_id: ChainId): BigNumber => {
+export const SINGLE_HOP_OVERHEAD = (_id: ChainIds): BigNumber => {
   return BigNumber.from(15000);
 };
 
-export const TOKEN_OVERHEAD = (id: ChainId, route: V3Route): BigNumber => {
+export const TOKEN_OVERHEAD = (id: ChainIds, route: V3Route): BigNumber => {
   const tokens: Token[] = route.tokenPath;
   let overhead = BigNumber.from(0);
 
@@ -135,14 +135,14 @@ export const TOKEN_OVERHEAD = (id: ChainId, route: V3Route): BigNumber => {
 };
 
 // TODO: change per chain
-export const NATIVE_WRAP_OVERHEAD = (id: ChainId): BigNumber => {
+export const NATIVE_WRAP_OVERHEAD = (id: ChainIds): BigNumber => {
   switch (id) {
     default:
       return BigNumber.from(27938);
   }
 };
 
-export const NATIVE_UNWRAP_OVERHEAD = (id: ChainId): BigNumber => {
+export const NATIVE_UNWRAP_OVERHEAD = (id: ChainIds): BigNumber => {
   switch (id) {
     default:
       return BigNumber.from(36000);
@@ -150,7 +150,7 @@ export const NATIVE_UNWRAP_OVERHEAD = (id: ChainId): BigNumber => {
 };
 
 export const NATIVE_OVERHEAD = (
-  chainId: ChainId,
+  chainId: ChainIds,
   amount: Currency,
   quote: Currency
 ): BigNumber => {

@@ -22,10 +22,10 @@ import {
 import { Erc20__factory } from '../types/other/factories/Erc20__factory';
 import { Permit2__factory } from '../types/other/factories/Permit2__factory';
 import {
-  BEACON_CHAIN_DEPOSIT_ADDRESS,
+  BEACON_CHAIN_DEPOSIT_ADDRESS, ChainIds,
   log,
   MAX_UINT160,
-  SWAP_ROUTER_02_ADDRESSES,
+  SWAP_ROUTER_02_ADDRESSES
 } from '../util';
 import { APPROVE_TOKEN_FOR_TRANSFER } from '../util/callData';
 import {
@@ -69,7 +69,7 @@ enum TenderlySimulationType {
 }
 
 type TenderlySimulationRequest = {
-  network_id: ChainId;
+  network_id: ChainIds;
   estimate_gas: boolean;
   input: string;
   to: string;
@@ -99,7 +99,7 @@ export class FallbackTenderlySimulator extends Simulator {
   private tenderlySimulator: TenderlySimulator;
   private ethEstimateGasSimulator: EthEstimateGasSimulator;
   constructor(
-    chainId: ChainId,
+    chainId: ChainIds,
     provider: JsonRpcProvider,
     portionProvider: IPortionProvider,
     tenderlySimulator: TenderlySimulator,
@@ -180,7 +180,7 @@ export class TenderlySimulator extends Simulator {
   private tenderlyAccessKey: string;
   private v2PoolProvider: IV2PoolProvider;
   private v3PoolProvider: IV3PoolProvider;
-  private overrideEstimateMultiplier: { [chainId in ChainId]?: number };
+  private overrideEstimateMultiplier: { [chainId in ChainIds]?: number };
   private tenderlyRequestTimeout?: number;
   private tenderlyServiceInstance = axios.create({
     // keep connections alive,
@@ -190,7 +190,7 @@ export class TenderlySimulator extends Simulator {
   });
 
   constructor(
-    chainId: ChainId,
+    chainId: ChainIds,
     tenderlyBaseUrl: string,
     tenderlyUser: string,
     tenderlyProject: string,
@@ -199,7 +199,7 @@ export class TenderlySimulator extends Simulator {
     v3PoolProvider: IV3PoolProvider,
     provider: JsonRpcProvider,
     portionProvider: IPortionProvider,
-    overrideEstimateMultiplier?: { [chainId in ChainId]?: number },
+    overrideEstimateMultiplier?: { [chainId in ChainIds]?: number },
     tenderlyRequestTimeout?: number
   ) {
     super(provider, portionProvider, chainId);
@@ -223,7 +223,7 @@ export class TenderlySimulator extends Simulator {
     const currencyIn = swapRoute.trade.inputAmount.currency;
     const tokenIn = currencyIn.wrapped;
     const chainId = this.chainId;
-    if ([ChainId.CELO, ChainId.CELO_ALFAJORES].includes(chainId)) {
+    if ([ChainId.CELO, ChainId.CELO_ALFAJORES].includes(chainId.valueOf())) {
       const msg = 'Celo not supported by Tenderly!';
       log.info(msg);
       return { ...swapRoute, simulationStatus: SimulationStatus.NotSupported };

@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Protocol } from '@uniswap/router-sdk';
-import { ChainId, Currency, Token, TradeType } from '@uniswap/sdk-core';
+import { Currency, Token, TradeType } from '@uniswap/sdk-core';
 import _ from 'lodash';
 
 import {
@@ -13,11 +13,17 @@ import {
   TokenValidationResult,
 } from '../../../providers';
 import {
+  ArbitrumGasData,
+  IL2GasDataProvider,
+  OptimismGasData,
+} from '../../../providers/v3/gas-data-provider';
+import {
+  ChainIds,
   CurrencyAmount,
   log,
   metric,
   MetricLoggerUnit,
-  routeToString,
+  routeToString
 } from '../../../util';
 import { V2Route } from '../../router';
 import { AlphaRouterConfig } from '../alpha-router';
@@ -30,11 +36,6 @@ import {
 import { IGasModel, IV2GasModelFactory } from '../gas-models';
 import { NATIVE_OVERHEAD } from '../gas-models/v3/gas-costs';
 
-import {
-  ArbitrumGasData,
-  IL2GasDataProvider,
-  OptimismGasData,
-} from '../../../providers/v3/gas-data-provider';
 import { BaseQuoter } from './base-quoter';
 import { GetQuotesResult } from './model/results/get-quotes-result';
 import { GetRoutesResult } from './model/results/get-routes-result';
@@ -54,7 +55,7 @@ export class V2Quoter extends BaseQuoter<V2CandidatePools, V2Route> {
     v2QuoteProvider: IV2QuoteProvider,
     v2GasModelFactory: IV2GasModelFactory,
     tokenProvider: ITokenProvider,
-    chainId: ChainId,
+    chainId: ChainIds,
     blockedTokenListProvider?: ITokenListProvider,
     tokenValidatorProvider?: ITokenValidatorProvider,
     l2GasDataProvider?:

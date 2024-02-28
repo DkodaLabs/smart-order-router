@@ -1,4 +1,4 @@
-import { ChainId } from '@uniswap/sdk-core';
+import { ChainIds } from '../../util';
 
 import { ICache } from './../cache';
 import { IV2SubgraphProvider, V2SubgraphPool } from './subgraph-provider';
@@ -10,7 +10,7 @@ import { IV2SubgraphProvider, V2SubgraphPool } from './subgraph-provider';
  * @class CachingV2SubgraphProvider
  */
 export class CachingV2SubgraphProvider implements IV2SubgraphProvider {
-  private SUBGRAPH_KEY = (chainId: ChainId) => `subgraph-pools-v2-${chainId}`;
+  private SUBGRAPH_KEY = (chainId: ChainIds) => `subgraph-pools-v2-${chainId}`;
 
   /**
    * Creates an instance of CachingV2SubgraphProvider.
@@ -19,7 +19,7 @@ export class CachingV2SubgraphProvider implements IV2SubgraphProvider {
    * @param cache Cache instance to hold cached pools.
    */
   constructor(
-    private chainId: ChainId,
+    private chainId: ChainIds,
     protected subgraphProvider: IV2SubgraphProvider,
     private cache: ICache<V2SubgraphPool[]>
   ) {}

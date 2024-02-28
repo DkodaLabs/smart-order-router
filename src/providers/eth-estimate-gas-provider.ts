@@ -8,7 +8,7 @@ import {
   SwapRoute,
   SwapType,
 } from '../routers';
-import { BEACON_CHAIN_DEPOSIT_ADDRESS, log } from '../util';
+import { BEACON_CHAIN_DEPOSIT_ADDRESS, ChainIds, log } from '../util';
 import {
   calculateGasUsed,
   initSwapRouteFromExisting,
@@ -27,15 +27,15 @@ const DEFAULT_ESTIMATE_MULTIPLIER = 1.2;
 export class EthEstimateGasSimulator extends Simulator {
   v2PoolProvider: IV2PoolProvider;
   v3PoolProvider: IV3PoolProvider;
-  private overrideEstimateMultiplier: { [chainId in ChainId]?: number };
+  private overrideEstimateMultiplier: { [chainId in ChainIds]?: number };
 
   constructor(
-    chainId: ChainId,
+    chainId: ChainIds,
     provider: JsonRpcProvider,
     v2PoolProvider: IV2PoolProvider,
     v3PoolProvider: IV3PoolProvider,
     portionProvider: IPortionProvider,
-    overrideEstimateMultiplier?: { [chainId in ChainId]?: number }
+    overrideEstimateMultiplier?: { [chainId in ChainIds]?: number }
   ) {
     super(provider, portionProvider, chainId);
     this.v2PoolProvider = v2PoolProvider;

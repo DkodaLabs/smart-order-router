@@ -159,7 +159,7 @@ export type AlphaRouterParams = {
   /**
    * The chain id for this instance of the Alpha Router.
    */
-  chainId: ChainId;
+  chainId: ChainIds;
   /**
    * The Web3 provider for getting on-chain data.
    */
@@ -442,7 +442,7 @@ export class AlphaRouter
     IRouter<AlphaRouterConfig>,
     ISwapToRatio<AlphaRouterConfig, SwapAndAddConfig>
 {
-  protected chainId: ChainId;
+  protected chainId: ChainIds;
   protected provider: BaseProvider;
   protected multicall2Provider: UniswapMulticallProvider;
   protected v3SubgraphProvider: IV3SubgraphProvider;
@@ -506,7 +506,7 @@ export class AlphaRouter
       v3PoolProvider ??
       new CachingV3PoolProvider(
         this.chainId,
-        new V3PoolProvider(ID_TO_CHAIN_ID(chainId), this.multicall2Provider),
+        new V3PoolProvider(ID_TO_CHAIN_ID(chainId), this.multicall2Provider, provider),
         new NodeJSCache(new NodeCache({ stdTTL: 360, useClones: false }))
       );
     this.simulator = simulator;
@@ -1102,6 +1102,8 @@ export class AlphaRouter
       log.warn(`Finalized routing config is ${JSON.stringify(routingConfig)}`);
     }
 
+    log.info("Here1");
+
     const gasPriceWei = await this.getGasPriceWei(
       await blockNumber,
       await partialRoutingConfig.blockNumber
@@ -1114,6 +1116,7 @@ export class AlphaRouter
           await this.tokenProvider.getTokens([routingConfig.gasToken])
         ).getTokenByAddress(routingConfig.gasToken)
       : undefined;
+    log.info("Here2");
 
     const providerConfig: GasModelProviderConfig = {
       ...routingConfig,
@@ -1126,6 +1129,8 @@ export class AlphaRouter
       gasToken,
     };
 
+    log.info("Here3");
+
     const {
       v2GasModel: v2GasModel,
       v3GasModel: v3GasModel,
@@ -1136,6 +1141,7 @@ export class AlphaRouter
       quoteToken,
       providerConfig
     );
+    log.info("Here4");
 
     // Create a Set to sanitize the protocols input, a Set of undefined becomes an empty set,
     // Then create an Array from the values of that Set.
@@ -1748,7 +1754,7 @@ export class AlphaRouter
       protocols.includes(Protocol.MIXED) ||
       (noProtocolsSpecified && v2SupportedInChain);
     const mixedProtocolAllowed =
-      [ChainId.MAINNET, ChainId.GOERLI].includes(this.chainId) &&
+      [ChainId.MAINNET, ChainId.GOERLI].includes(this.chainId.valueOf()) &&
       tradeType === TradeType.EXACT_INPUT;
 
     const beforeGetCandidates = Date.now();

@@ -1,5 +1,5 @@
 import { Protocol } from '@uniswap/router-sdk';
-import { ChainId, Currency, Token, TradeType } from '@uniswap/sdk-core';
+import { Currency, Token, TradeType } from '@uniswap/sdk-core';
 import _ from 'lodash';
 
 import {
@@ -12,11 +12,12 @@ import {
   TokenValidationResult,
 } from '../../../providers';
 import {
+  ChainIds,
   CurrencyAmount,
   log,
   metric,
   MetricLoggerUnit,
-  routeToString,
+  routeToString
 } from '../../../util';
 import { V3Route } from '../../router';
 import { AlphaRouterConfig } from '../alpha-router';
@@ -42,7 +43,7 @@ export class V3Quoter extends BaseQuoter<V3CandidatePools, V3Route> {
     v3PoolProvider: IV3PoolProvider,
     onChainQuoteProvider: IOnChainQuoteProvider,
     tokenProvider: ITokenProvider,
-    chainId: ChainId,
+    chainId: ChainIds,
     blockedTokenListProvider?: ITokenListProvider,
     tokenValidatorProvider?: ITokenValidatorProvider
   ) {
