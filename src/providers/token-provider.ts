@@ -664,6 +664,22 @@ export const WETH_BLAST_SEPOLIA = new Token(
   'Wrapped Ether'
 );
 
+export const WETH_BLAST = new Token(
+  AdditionalChainIds.BLAST,
+  '0x4300000000000000000000000000000000000004',
+  18,
+  'WETH',
+  'Wrapped Ether'
+);
+
+export const USDB_BLAST = new Token(
+  AdditionalChainIds.BLAST,
+  '0x4300000000000000000000000000000000000003',
+  18,
+  'USDB',
+  'Rebasing USD'
+);
+
 
 export class TokenProvider implements ITokenProvider {
   constructor(

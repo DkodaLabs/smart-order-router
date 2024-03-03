@@ -21,7 +21,7 @@ import {
   DAI_OPTIMISM_GOERLI,
   DAI_OPTIMISM_SEPOLIA,
   DAI_POLYGON_MUMBAI,
-  DAI_SEPOLIA, USDB_BLAST_SEPOLIA,
+  DAI_SEPOLIA, USDB_BLAST, USDB_BLAST_SEPOLIA,
   USDC_ARBITRUM,
   USDC_ARBITRUM_GOERLI,
   USDC_ARBITRUM_SEPOLIA,
@@ -115,7 +115,8 @@ export const usdGasTokensByChain: { [chainId in ChainIds]?: Token[] } = {
     USDC_BRIDGED_AVAX,
   ],
   [ChainId.BASE]: [USDC_BASE, USDC_NATIVE_BASE],
-  [AdditionalChainIds.BLAST_SEPOLIA]: [USDB_BLAST_SEPOLIA]
+  [AdditionalChainIds.BLAST_SEPOLIA]: [USDB_BLAST_SEPOLIA],
+  [AdditionalChainIds.BLAST]: [USDB_BLAST]
 };
 
 export type L1ToL2GasCosts = {

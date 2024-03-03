@@ -1102,8 +1102,6 @@ export class AlphaRouter
       log.warn(`Finalized routing config is ${JSON.stringify(routingConfig)}`);
     }
 
-    log.info("Here1");
-
     const gasPriceWei = await this.getGasPriceWei(
       await blockNumber,
       await partialRoutingConfig.blockNumber
@@ -1116,7 +1114,6 @@ export class AlphaRouter
           await this.tokenProvider.getTokens([routingConfig.gasToken])
         ).getTokenByAddress(routingConfig.gasToken)
       : undefined;
-    log.info("Here2");
 
     const providerConfig: GasModelProviderConfig = {
       ...routingConfig,
@@ -1141,7 +1138,6 @@ export class AlphaRouter
       quoteToken,
       providerConfig
     );
-    log.info("Here4");
 
     // Create a Set to sanitize the protocols input, a Set of undefined becomes an empty set,
     // Then create an Array from the values of that Set.

@@ -28,7 +28,8 @@ export const SUPPORTED_CHAINS: ChainIds[] = [
   ChainId.BNB,
   ChainId.AVALANCHE,
   ChainId.BASE,
-  AdditionalChainIds.BLAST_SEPOLIA
+  AdditionalChainIds.BLAST_SEPOLIA,
+  AdditionalChainIds.BLAST
   // Gnosis and Moonbeam don't yet have contracts deployed yet
 ];
 
@@ -41,7 +42,8 @@ export const V2_SUPPORTED = [
   ChainId.BASE,
   ChainId.BNB,
   ChainId.AVALANCHE,
-  AdditionalChainIds.BLAST_SEPOLIA
+  AdditionalChainIds.BLAST_SEPOLIA,
+  AdditionalChainIds.BLAST
 ];
 
 export const HAS_L1_FEE = [
@@ -106,6 +108,8 @@ export const ID_TO_CHAIN_ID = (id: number): ChainIds => {
       return ChainId.BASE_GOERLI;
     case 168587773:
       return AdditionalChainIds.BLAST_SEPOLIA;
+    case 81457:
+      return AdditionalChainIds.BLAST;
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
@@ -132,6 +136,7 @@ export enum ChainName {
   BASE = 'base-mainnet',
   BASE_GOERLI = 'base-goerli',
   BLAST_SEPOLIA = 'blast-sepolia',
+  BLAST = 'blast',
 }
 
 export enum NativeCurrencyName {
@@ -216,6 +221,11 @@ export const NATIVE_NAMES_BY_ID: { [chainId: number]: string[] } = {
     'ETHER',
     '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   ],
+  [AdditionalChainIds.BLAST]: [
+    'ETH',
+    'ETHER',
+    '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+  ],
 };
 
 export const NATIVE_CURRENCY: { [chainId: number]: NativeCurrencyName } = {
@@ -238,6 +248,7 @@ export const NATIVE_CURRENCY: { [chainId: number]: NativeCurrencyName } = {
   [ChainId.AVALANCHE]: NativeCurrencyName.AVALANCHE,
   [ChainId.BASE]: NativeCurrencyName.ETHER,
   [AdditionalChainIds.BLAST_SEPOLIA]: NativeCurrencyName.ETHER,
+  [AdditionalChainIds.BLAST]: NativeCurrencyName.ETHER,
 };
 
 export const ID_TO_NETWORK_NAME = (id: number): ChainName => {
@@ -282,6 +293,8 @@ export const ID_TO_NETWORK_NAME = (id: number): ChainName => {
       return ChainName.BASE_GOERLI;
     case AdditionalChainIds.BLAST_SEPOLIA:
       return ChainName.BLAST_SEPOLIA;
+    case AdditionalChainIds.BLAST:
+      return ChainName.BLAST;
     default:
       throw new Error(`Unknown chain id: ${id}`);
   }
@@ -291,7 +304,7 @@ export const CHAIN_IDS_LIST = Object.values(ChainId).map((c) =>
   c.toString()
 ) as string[];
 
-CHAIN_IDS_LIST.push(AdditionalChainIds.BLAST_SEPOLIA.toString());
+Object.values(AdditionalChainIds).forEach((c) => CHAIN_IDS_LIST.push(c.toString()));
 
 export const ID_TO_PROVIDER = (id: ChainIds): string => {
   switch (id) {
@@ -329,6 +342,8 @@ export const ID_TO_PROVIDER = (id: ChainIds): string => {
       return process.env.JSON_RPC_PROVIDER_BASE!;
     case AdditionalChainIds.BLAST_SEPOLIA:
       return "https://yolo-restless-fire.blast-sepolia.quiknode.pro/6d8013584783e1f1ab32031f7091d7e21000c6af";
+    case AdditionalChainIds.BLAST:
+      return "https://holy-practical-owl.blast-mainnet.quiknode.pro/590d29b28faafbe6e3f80846cdc50e3f4c5356b0";
     default:
       throw new Error(`Chain id: ${id} not supported`);
   }
@@ -473,6 +488,13 @@ export const WRAPPED_NATIVE_CURRENCY: { [chainId in ChainIds]: Token } = {
   [AdditionalChainIds.BLAST_SEPOLIA]: new Token(
     AdditionalChainIds.BLAST_SEPOLIA,
     '0x4200000000000000000000000000000000000023',
+    18,
+    'WETH',
+    'Wrapped Ether'
+  ),
+  [AdditionalChainIds.BLAST]: new Token(
+    AdditionalChainIds.BLAST,
+    '0x4300000000000000000000000000000000000004',
     18,
     'WETH',
     'Wrapped Ether'

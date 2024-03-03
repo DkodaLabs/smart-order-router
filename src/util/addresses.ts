@@ -40,6 +40,7 @@ export const V3_CORE_FACTORY_ADDRESSES: AddressMap = {
   [ChainId.BASE]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE].v3CoreFactoryAddress,
   // TODO: Gnosis + Moonbeam contracts to be deployed
   [AdditionalChainIds.BLAST_SEPOLIA]: AdditionChainToAddresses[AdditionalChainIds.BLAST_SEPOLIA].v3CoreFactoryAddress,
+  [AdditionalChainIds.BLAST]: AdditionChainToAddresses[AdditionalChainIds.BLAST].v3CoreFactoryAddress,
 };
 
 export const QUOTER_V2_ADDRESSES: AddressMap = {
@@ -63,6 +64,7 @@ export const QUOTER_V2_ADDRESSES: AddressMap = {
   [ChainId.BASE]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE].quoterAddress,
   // TODO: Gnosis + Moonbeam contracts to be deployed
   [AdditionalChainIds.BLAST_SEPOLIA]: AdditionChainToAddresses[AdditionalChainIds.BLAST_SEPOLIA].quoterAddress,
+  [AdditionalChainIds.BLAST]: AdditionChainToAddresses[AdditionalChainIds.BLAST].quoterAddress,
 };
 
 export const MIXED_ROUTE_QUOTER_V1_ADDRESSES: AddressMap = {
@@ -94,6 +96,7 @@ export const UNISWAP_MULTICALL_ADDRESSES: AddressMap = {
   [ChainId.BASE]: CHAIN_TO_ADDRESSES_MAP[ChainId.BASE].multicallAddress,
   // TODO: Gnosis + Moonbeam contracts to be deployed
   [AdditionalChainIds.BLAST_SEPOLIA]: AdditionChainToAddresses[AdditionalChainIds.BLAST_SEPOLIA].multicallAddress,
+  [AdditionalChainIds.BLAST]: AdditionChainToAddresses[AdditionalChainIds.BLAST].multicallAddress,
 };
 
 export const SWAP_ROUTER_02_ADDRESSES= (chainId: number): string => {
