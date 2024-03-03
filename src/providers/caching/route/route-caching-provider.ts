@@ -4,7 +4,7 @@
  * @export
  * @interface IRouteCachingProvider
  */
-import { Protocol } from '@uniswap/router-sdk';
+import { Protocol } from 'wasabi-router-sdk';
 import {
   ChainId,
   Currency,

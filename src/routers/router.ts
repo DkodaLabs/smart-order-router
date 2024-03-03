@@ -1,11 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import {
-  CondensedAddLiquidityOptions,
-  MixedRouteSDK,
-  Protocol,
-  Trade,
-} from '@uniswap/router-sdk';
-import {
   Currency,
   Fraction,
   Percent,
@@ -15,11 +9,17 @@ import {
 import { SwapOptions as UniversalRouterSwapOptions } from '@uniswap/universal-router-sdk';
 import { Route as V2RouteRaw } from '@uniswap/v2-sdk';
 import {
-  MethodParameters as SDKMethodParameters,
   Pool,
   Position,
+  MethodParameters as SDKMethodParameters,
   Route as V3RouteRaw,
 } from '@uniswap/v3-sdk';
+import {
+  CondensedAddLiquidityOptions,
+  MixedRouteSDK,
+  Protocol,
+  Trade,
+} from 'wasabi-router-sdk';
 
 import { SimulationStatus } from '../providers';
 import { CurrencyAmount } from '../util/amounts';

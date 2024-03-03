@@ -1,9 +1,3 @@
-import {
-  MixedRouteSDK,
-  Protocol,
-  SwapRouter as SwapRouter02,
-  Trade,
-} from '@uniswap/router-sdk';
 import { Currency, TradeType } from '@uniswap/sdk-core';
 import {
   UNIVERSAL_ROUTER_ADDRESS,
@@ -12,6 +6,12 @@ import {
 import { Route as V2RouteRaw } from '@uniswap/v2-sdk';
 import { Route as V3RouteRaw } from '@uniswap/v3-sdk';
 import _ from 'lodash';
+import {
+  MixedRouteSDK,
+  Protocol,
+  SwapRouter as SwapRouter02,
+  Trade,
+} from 'wasabi-router-sdk';
 
 import {
   ChainIds,
@@ -236,6 +236,8 @@ export function buildSwapMethodParameters(
 ): MethodParameters {
   if (swapConfig.type == SwapType.UNIVERSAL_ROUTER) {
     return {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       ...UniversalRouter.swapERC20CallParameters(trade, swapConfig),
       to: UNIVERSAL_ROUTER_ADDRESS(chainId),
     };
@@ -249,6 +251,7 @@ export function buildSwapMethodParameters(
         slippageTolerance,
         deadlineOrPreviousBlockhash: deadline,
         inputTokenPermit,
+        chainId,
       }),
       to: SWAP_ROUTER_02_ADDRESSES(chainId),
     };

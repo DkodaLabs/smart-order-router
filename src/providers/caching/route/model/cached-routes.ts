@@ -1,4 +1,4 @@
-import { Protocol } from '@uniswap/router-sdk';
+import { Protocol } from 'wasabi-router-sdk';
 import { Token, TradeType } from '@uniswap/sdk-core';
 import _ from 'lodash';
 
