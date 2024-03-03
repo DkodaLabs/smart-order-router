@@ -94,7 +94,7 @@ export class V3SubgraphProvider implements IV3SubgraphProvider {
   private client: GraphQLClient;
 
   constructor(
-    private chainId: ChainId,
+    private chainId: ChainIds,
     private retries = 2,
     private timeout = 30000,
     private rollback = true
