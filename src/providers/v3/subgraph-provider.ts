@@ -71,7 +71,7 @@ const SUBGRAPH_URL_BY_CHAIN: { [chainId in ChainIds]?: string } = {
   [AdditionalChainIds.BLAST_SEPOLIA]:
     'https://api.studio.thegraph.com/query/62742/thruster_v3/v0.0.3',
   [AdditionalChainIds.BLAST]:
-    'https://api.studio.thegraph.com/query/62742/thruster_v3_mainnet/v0.0.4',
+    'https://api.studio.thegraph.com/query/62742/thruster_v3_mainnet/v0.0.5',
 };
 
 const PAGE_SIZE = 1000; // 1k is max possible query size from subgraph.
