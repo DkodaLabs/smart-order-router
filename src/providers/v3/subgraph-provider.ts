@@ -97,13 +97,13 @@ export class V3SubgraphProvider implements IV3SubgraphProvider {
     private chainId: ChainIds,
     private retries = 2,
     private timeout = 30000,
-    private rollback = true
+    private rollback = true,
+    private subgraphUrl = SUBGRAPH_URL_BY_CHAIN[chainId]
   ) {
-    const subgraphUrl = SUBGRAPH_URL_BY_CHAIN[this.chainId];
-    if (!subgraphUrl) {
+    if (!this.subgraphUrl) {
       throw new Error(`No subgraph url for chain id: ${this.chainId}`);
     }
-    this.client = new GraphQLClient(subgraphUrl);
+    this.client = new GraphQLClient(this.subgraphUrl);
   }
 
   public async getPools(
